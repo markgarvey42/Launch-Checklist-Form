@@ -11,11 +11,6 @@
 </ol>
 <img src="${}">
 */
-<<<<<<< HEAD
-=======
-
-
->>>>>>> f67238097bd202ef8c4e7c605c17c8d4f1bb0b16
 window.addEventListener("load", function() {
 
    let form = document.getElementById("launchForm");
@@ -85,11 +80,8 @@ window.addEventListener("load", function() {
 
       } else if ( cargoMass.value > 10000 ) {
 
-<<<<<<< HEAD
-         document.getElementById(faultyItems).style.visibility = "visible";
-=======
          faultyItems.style.visibility = "visible";
->>>>>>> f67238097bd202ef8c4e7c605c17c8d4f1bb0b16
+         faultyItems.style.visibility = "visible";
 
          document.querySelector("cargoStatus").innerHTML = "There is too much mass for the shuttle to take off";
 
