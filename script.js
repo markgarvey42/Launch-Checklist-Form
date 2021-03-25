@@ -31,35 +31,52 @@ window.addEventListener("load", function() {
       let cargoStatus = document.querySelector("cargoStatus");
       let launchStatus = document.querySelector("launchStatus");
 
+      let isReady = false;
+
       // Checks/Alerts for null/undefined entries
       for ( let i = 0; i < submissionArr.length; i++ ) { 
 
          if ( !submissionArr[i].value ) {
+
+            isReady = false;
             alert ( "ALL FIELDS ARE REQUIRED" );
-         };
+            break;
 
-      };
+         } else isReady = true;
 
+         //If-statement block validates/alerts that pilot/copilot names must be strings
+         if( !isNaN(pilotName.value) ) { 
 
-      //If-statement block validates/alerts that pilot/copilot names must be strings
-      if( !isNaN(pilotName.value) ) { 
+            isReady = false;
+            alert ( "Pilot Name: INVALID VALUE!" );
+            break;
 
-         alert ( "Pilot Name: INVALID VALUE!" );
+         } else isReady = true;
+         
+         if( !isNaN(copilotName.value) ) {
 
-      } else if( !isNaN(copilotName.value) ) {
+            isReady = false;
+            alert ( "Co-pilot Name: INVALID VALUE!" );
+            break;
 
-         alert ( "Co-pilot Name: INVALID VALUE!" );
+         } else isReady = true;
 
-      };
+         //If-Statement block validates/alerts that fuelLevel/cargoMass must be numbers
+         if( isNaN(fuelLevel.value) ) { 
 
-      //If-Statement block validates/alerts that fuelLevel/cargoMass must be numbers
-      if( isNaN(fuelLevel.value) ) { 
+            isReady = false;
+            alert ( "Fuel Level: INVALID VALUE!" );
+            break;
 
-         alert ( "Fuel Level: INVALID VALUE!" );
+         } else isReady = true;
+         
+         if ( isNaN(cargoMass.value) ) {
 
-      } else if ( isNaN(cargoMass.value) ) {
+            isReady = false;
+            alert ( "Cargo Mass: INVALID VALUE!" );
+            break;
 
-         alert ( "Cargo Mass: INVALID VALUE!" );
+         } else isReady = true;
 
       };
 
@@ -83,29 +100,36 @@ window.addEventListener("load", function() {
          faultyItems.style.visibility = "visible";
          faultyItems.style.visibility = "visible";
 
-         document.querySelector("cargoStatus").innerHTML = "There is too much mass for the shuttle to take off";
+         document.getElementById("cargoStatus").innerHTML = "There is too much mass for the shuttle to take off";
 
          document.getElementById("launchStatus").innerHTML = "Shuttle Not Ready for Launch";
          document.getElementById("launchStatus").style.color = "red";
 
-      } else {
+      } else if ( isReady === true) {
 
          document.getElementById("launchStatus").innerHTML = "Shuttle Is Ready for Launch"
          document.getElementById("launchStatus").style.color = 'green';
 
+         let json = [];
+         fetch("https://handlers.education.launchcode.org/static/planets.json")
+         .then(response => response.json())
+         .then(function(json) {
+            const missionTarget = document.getElementById("missionTarget");
+            missionTarget.innerHTML = `
+            <h2>Mission Destination</h2>
+               <ol>
+                  <li>Name: ${json[0].name}</li>
+                  <li>Diameter: ${json[0].diameter}</li>
+                  <li>Star: ${json[0].star}</li>
+                  <li>Distance from Earth: ${json[0].distance}</li>
+                  <li>Number of Moons: ${json[0].moons}</li>
+               </ol>
+            <img src="${json[0].image}">
+            `;
+         });
+
       };
 
-      
-
-
-
-
-
-
-
-
-
    });
-
 
 });
