@@ -32,7 +32,8 @@ window.addEventListener("load", function() {
       let launchStatus = document.querySelector("launchStatus");
 
       let isValid = false;
-      let isReady = false;
+      let isFuelReady = false;
+      let isCargoReady = false;
 
       // Checks/Alerts for null/undefined entries
       for ( let i = 0; i < submissionArr.length; i++ ) { 
@@ -90,19 +91,19 @@ window.addEventListener("load", function() {
 
       if(isValid) {
 
+         document.getElementById("launchStatus").innerHTML = "Shuttle Not Ready for Launch";
+         document.getElementById("launchStatus").style.color = "red";
+
          if ( fuelLevel.value < 10000 ) { 
 
             faultyItems.style.visibility = "visible";
    
             document.getElementById("fuelStatus").innerHTML = "There is not enough fuel for the journey";
    
-            document.getElementById("launchStatus").innerHTML = "Shuttle Not Ready for Launch";
-            document.getElementById("launchStatus").style.color = "red";
-   
-            isReady = false;
+            isFuelReady = false;
    
          } else {
-            isReady = true;
+            isFuelReady = true;
             document.getElementById("fuelStatus").innerHTML = "Fuel level high enough for launch";
          }
          
@@ -112,17 +113,15 @@ window.addEventListener("load", function() {
    
             document.getElementById("cargoStatus").innerHTML = "There is too much mass for the shuttle to take off";
    
-            document.getElementById("launchStatus").innerHTML = "Shuttle Not Ready for Launch";
-            document.getElementById("launchStatus").style.color = "red";
-   
-            isReady = false;
+            isCargoReady = false;
    
          } else {
-            isReady = true;
+            isCargoReady = true;
             document.getElementById("cargoStatus").innerHTML = "Cargo mass low enough for launch";
          }
+
          
-         if ( isReady === true) {
+         if (isCargoReady && isFuelReady) {
    
             
             document.getElementById("launchStatus").innerHTML = "Shuttle Is Ready for Launch"
@@ -135,19 +134,21 @@ window.addEventListener("load", function() {
             .then(response => response.json())
             .then(function(json) {
                const missionTarget = document.getElementById("missionTarget");
-               let index = json.length;
+               let index = Math.floor((Math.random() * json.length));
 
                missionTarget.innerHTML = `
                <h2>Mission Destination</h2>
                   <ol>
-                     <li id="destinationName">Name: ${json[0].name}</li>
-                     <li id="destinationDiameter">Diameter: ${json[0].diameter}</li>
-                     <li id="destinationStar">Star: ${json[0].star}</li>
-                     <li id="destinationDistance">Distance from Earth: ${json[0].distance}</li>
-                     <li id="destinationMoons">Number of Moons: ${json[0].moons}</li>
+                     <li id="destinationName">Name: ${json[index].name}</li>
+                     <li id="destinationDiameter">Diameter: ${json[index].diameter}</li>
+                     <li id="destinationStar">Star: ${json[index].star}</li>
+                     <li id="destinationDistance">Distance from Earth: ${json[index].distance}</li>
+                     <li id="destinationMoons">Number of Moons: ${json[index].moons}</li>
                   </ol>
-               <img id="destinationPicture" src="${json[0].image}">
+               <img id="destinationPicture" src="${json[index].image}">
+               <li>Click Submit to Cycle Through Destinations</li>
                `;
+
 
             });
          };
