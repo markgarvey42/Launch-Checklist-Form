@@ -51,3 +51,7 @@ button {
     height: 30px;
     margin: 10px 0;
 }
+
+#changeDestination {
+    float: center;
+}
